@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Members</title>
-    <link rel="stylesheet" href="../static/view.css"
+    <link rel="stylesheet" href="../static/view.css">
 
 </head>
 <body>
     
+    {% for name in names %} 
+    <p>{{name}}</p>
+    {% endfor %}
 </body>
 </html>

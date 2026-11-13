@@ -32,5 +32,30 @@ def init_db():
     print("database created sucessfully")
 
 
+def add_data(name, university):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute(
+            "INSERT INTO Survey (name, University) VALUES (?, ?)",
+            (name, university)
+        )
+    connection.commit()
+    connection.close()
+
+
+
+def get_data():
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM Survey")
+    return [dict(row) for row  in  cursor.fetchall()]
+
+
+    
+
+
+
+
+
 
 init_db()

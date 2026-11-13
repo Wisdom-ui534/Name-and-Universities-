@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
-from database import get_db_connection
+from database import get_db_connection, add_data, get_data
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -21,25 +21,31 @@ async def show_index(request: Request):
 
 @app.get("/view", response_class=HTMLResponse)
 async def show_index(request: Request):
-    return templates.TemplateResponse(request=request, name="view.html")
+    return templates.TemplateResponse(request=request, name="view.html", context={"names":make_list_of_names()})
 
 
 
 
 @app.post("/add/send_data")
 def add_data_to_database(name: str = Form(...), university: str = Form(...)):
-    connection = get_db_connection()
-    cursor = connection.cursor()
-    cursor.execute(
-        "INSERT INTO Survey (name, University) VALUES (?, ?)",
-        (name, university)
-    )
-    connection.commit()
-    connection.close()
+    add_data(name, university)
 
     return RedirectResponse(
         url="/add",
         status_code=303
     )
 
+data = [{'id': 1, 'name': 'Peter Parker', 'University': 'Queens Colleg3e'}, 
+        {'id': 2, 'name': 'Gary Houston', 'University': 'University of Newcastle'}]
 
+
+
+def make_list_of_names():
+    data = get_data()
+    names = []
+    for _, dict_data in enumerate(data):
+        print(dict_data)
+        names.append(dict_data["name"])
+    return(names)
+
+make_list_of_names()
