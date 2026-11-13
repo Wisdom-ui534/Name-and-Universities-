@@ -2,3 +2,5 @@
 . mount the static and templataes folder
 
 now make the functions
+
+make the data store in the data base from the form
